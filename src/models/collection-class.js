@@ -4,7 +4,7 @@ class Collection {
   constructor(model) {
     this.model = model;
   }
-  
+
   async create(json) {
     try {
       let collectionInstance = await this.model.create(json);
@@ -15,10 +15,20 @@ class Collection {
     }
   }
 
-  async read(id) {
+  async readAll() {
+    try {
+      let result = await this.model.findAll();
+      return result;
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+
+  async readOne(id) {
     try {
       const collectionId = +id;
-      let idToCompare = {where: {id: collectionId}};
+      let idToCompare = { where: { id: collectionId } };
       let result = await this.model.findOne(idToCompare);
       return result;
     } catch (error) {
@@ -30,7 +40,7 @@ class Collection {
   async update(id, updatedData) {
     try {
       const collectionId = +id;
-      let idToCompare = {where: {id: collectionId}};
+      let idToCompare = { where: { id: collectionId } };
       let collectionToUpdate = await this.model.findOne(idToCompare);
       let updatedCollection = await collectionToUpdate.update(updatedData);
       return updatedCollection;
@@ -44,7 +54,7 @@ class Collection {
   async delete(id) {
     try {
       const collectionId = +id;
-      let idToCompare = {where: {id: collectionId}};
+      let idToCompare = { where: { id: collectionId } };
       let collectionToDelete = await this.model.findOne(idToCompare);
       await this.model.destroy(idToCompare);
       return collectionToDelete;
